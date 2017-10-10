@@ -17,6 +17,28 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(serial,SIGNAL(readyRead()),serial,SLOT(serialRead()));    //连接槽
     connect(serial,SIGNAL(readyUpdateHandInfo()), this, SLOT(updateHandInfo()));
     connect(mLeap,SIGNAL(readyFingerAngle()),this,SLOT(updateLeapToHand()));
+
+    timerId = startTimer(500);
+}
+
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    for(int i = 0; i<5; i++)
+    {
+        mAngle[i].type = (char)i;
+        mAngle[i].valid = 'y';
+    }
+    mAngle[0].angle = this->ui->sliderThumbFingerAngle->value();
+    mAngle[1].angle = this->ui->sliderIndexFingerAngle->value();
+    mAngle[2].angle = this->ui->sliderMiddleFingerAngle->value();
+    mAngle[3].angle = this->ui->sliderRingFingerAngle->value();
+    mAngle[4].angle = this->ui->sliderPinkyFingerAngle->value();
+    serial->sendFingerAngle(mAngle);
+//    cout << "send angle: 1 --> " << mAngle[0].angle << endl
+//         << "2 --> "<< mAngle[1].angle << endl
+//         << "3 --> "<< mAngle[2].angle << endl
+//         << "4 --> "<< mAngle[3].angle << endl
+//         << "5 --> "<< mAngle[4].angle << endl;
 }
 
 MainWindow::~MainWindow()
@@ -28,18 +50,18 @@ MainWindow::~MainWindow()
  */
 void MainWindow::InitFingerAngleRange()
 {
-//    this->ui->sliderThumbFingerAngle->setMinimum(0);
-//    this->ui->sliderThumbFingerAngle->setMaximum(100);
-//    this->ui->labelThumbMin->setText(QString("0"));
+    this->ui->sliderThumbFingerAngle->setMinimum(0);
+    this->ui->sliderThumbFingerAngle->setMaximum(100);
+    this->ui->labelThumbMin->setText(QString("0"));
 }
 
 void MainWindow::on_btnSendData_clicked()
 {
     FingerAngle angle[5] = {{(char)1,'y',15},{(char)1,'y',15},{(char)1,'y',15},{(char)1,'y',15},{(char)1,'y',15}};
     memcpy(mLeap->mFingerAngle, angle, 5 * sizeof(FingerAngle));
-//    serial->write("test", 4);
-//    serial->waitForBytesWritten(500);
-//    serial->connectHand();
+    serial->write("test", 4);
+    serial->waitForBytesWritten(500);
+    serial->connectHand();
     serial->sendFingerAngle(mLeap->mFingerAngle);
 }
 /**
@@ -76,11 +98,11 @@ void MainWindow::updateHandInfo()
 {
     if(serial->isHandConnected())
     {
-        this->ui->labelHancConnect->setText(QString("手已连接"));
+        this->ui->labelHancConnect->setText(QString("Connect"));
     }
     else
     {
-        this->ui->labelHancConnect->setText(QString("手已断开"));
+        this->ui->labelHancConnect->setText(QString("Broken"));
     }
 }
 /**
@@ -105,6 +127,7 @@ void MainWindow::on_btnCloseLeap_clicked()
 void MainWindow::on_slderThumbFingerAngle_sliderMoved(int position)
 {
     serial->setFingerPosition(0, position);
+    cout << "test" << endl;
 }
 
 void MainWindow::on_sliderIndexFingerAngle_sliderMoved(int position)
@@ -126,8 +149,3 @@ void MainWindow::on_sliderPinkyFingerAngle_sliderMoved(int position)
 {
     serial->setFingerPosition(4, position);
 }
-
-
-
-
-

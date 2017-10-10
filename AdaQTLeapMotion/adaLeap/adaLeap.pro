@@ -27,6 +27,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += D:\LeapSDK\include
-LIBS += -LD:\LeapSDK\lib\x86 \
+INCLUDEPATH += D:\Develop\LeapSDK\include
+LIBS += -LD:\Develop\LeapSDK\lib\x86 \
 -lLeap

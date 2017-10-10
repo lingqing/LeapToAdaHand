@@ -34,7 +34,7 @@ void UserSerialPort::serialRead()
     //char data[100];
     waitForReadyRead(100);
     read((char *)&readFrame.Tag, 100);
-    cout << readFrame.type << endl;
+    cout << "read frame type:" << readFrame.type << endl;
     if(readFrame.Tag == 'a'/* && '5' == readFrame.End*/)
     {
         if(readFrame.type == 'r')
@@ -132,6 +132,7 @@ void UserSerialPort::sendFingerAngle(FingerAngle * angle)
     {
         waitForReadyRead(100);
         write(&con.Tag,con.lenth);
+
     }
 }
 /**
@@ -142,28 +143,43 @@ void UserSerialPort::sendFingerAngle(FingerAngle * angle)
  */
 bool UserSerialPort::setFingerPosition(int finger, int position)
 {
-    FingerAngle angle;
-    angle.type = 'y';
-    angle.type = finger;
-    angle.angle = position;
+//    FingerAngle *angle;
+////    angle.type = 'y';
+////    angle.type = finger;
+////    angle.angle = position;
 
-    Com_Frame con;
-    con.Tag = 'a';
-    con.End[0] = '5';
-    con.type = 'f'; // 单个手指
-    con.lenth = 4; // 长度为4
+//    Com_Frame con;
+////    con.Tag = 'a';
+////    con.End[0] = '5';
+////    con.type = 'f'; // 单个手指
+////    con.lenth = 4; // 长度为4
 
-    memcpy(&con.data[0], &angle.type, sizeof(FingerAngle));
+//    for(int i = 0; i < 5; i++)
+//    {
+//        angle = (FingerAngle *)(con.data + i*sizeof(FingerAngle));
+//        angle->type = (char)i;
+//        if(i==finger)
+//        {
+//            angle->angle = (uint16_t)position;
+//            angle->valid = 'y';
+//        }
+//        else
+//        {
+//            angle->valid = 'n';
+//        }
+//    }
+////    memcpy(&con.data[0], &angle.type, sizeof(FingerAngle));
 
-    if(!isOpen())
-    {
-        cout << "serial is not opened" << endl;
-        return false;
-    }
-    else
-    {
-        waitForReadyRead(100);
-        write(&con.Tag,con.lenth);
-    }
+//    if(!isOpen())
+//    {
+//        cout << "serial is not opened" << endl;
+//        return false;
+//    }
+//    else
+//    {
+//        waitForReadyRead(100);
+//        write(&con.Tag,con.lenth);
+//        cout << "writ to finger" << endl;
+//    }
     return true;
 }

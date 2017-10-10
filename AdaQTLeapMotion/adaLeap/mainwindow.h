@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSerialPort>
+#include <QThread>
 
 #include "leapmotionfinger.h"
 #include "userserialport.h"
@@ -37,11 +38,15 @@ private slots:
     void on_sliderRingFingerAngle_sliderMoved(int position);
     void on_sliderMiddleFingerAngle_sliderMoved(int position);
 
-
 private:
     Ui::MainWindow *ui;
     UserSerialPort *serial;
     LeapMotionFinger *mLeap;
+
+    int timerId;
+    void timerEvent(QTimerEvent *event);
+
+    FingerAngle mAngle[5];
 
 };
 

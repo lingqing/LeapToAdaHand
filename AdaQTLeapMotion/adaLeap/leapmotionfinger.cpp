@@ -126,7 +126,7 @@ void LeapListener::onFrame(const Controller& controller) {
     }
 
     if (!frame.hands().isEmpty()) {
-        std::cout << std::endl;
+        std::cout << "frame hand empty" <<std::endl;
     }
 
 }

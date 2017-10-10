@@ -97,7 +97,7 @@ void driverFinger()
       if((*ptrFingerAngle)[i].valid == 'y' && i == (*ptrFingerAngle)[i].type)
       {
         angle = (*ptrFingerAngle)[i].angle;
-        if( angle > 0 && angle < 240)
+        if( angle >= 0 && angle <= 250)
         {
           if(i !=0 )
           {
@@ -109,7 +109,7 @@ void driverFinger()
           else
           {
            if(angle < 0) angle = 0;
-            if(angle > 70) angle = 70;            
+            if(angle > 60) angle = 60;            
             finger[i].writePos(50 + angle * 13.2); 
           }          
         }
